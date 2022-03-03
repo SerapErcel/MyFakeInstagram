@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Instagram">
         <activity
+            android:name=".UploadActivity"
+            android:exported="false" />
+        <activity
             android:name=".FeedActivity"
             android:exported="false" />
         <activity
