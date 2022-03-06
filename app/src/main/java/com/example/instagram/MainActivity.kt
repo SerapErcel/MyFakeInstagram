@@ -14,6 +14,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var email: String
+    private lateinit var password: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +34,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun signInClicked(view: View) {
-        val email = binding.emailText.text.toString()
-        val password = binding.passwordText.text.toString()
+        email = binding.emailText.text.toString()
+        password = binding.passwordText.text.toString()
         if (email.equals("") || password.equals("")) {
             Toast.makeText(this, "Email and password!", Toast.LENGTH_LONG).show()
         } else {
@@ -48,8 +51,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun signUpClicked(view: View) {
-        val email = binding.emailText.text.toString()
-        val password = binding.passwordText.text.toString()
+        email = binding.emailText.text.toString()
+        password = binding.passwordText.text.toString()
 
         if (email.equals("") || password.equals("")) {
             Toast.makeText(this, "Enter email and password!", Toast.LENGTH_LONG).show()
