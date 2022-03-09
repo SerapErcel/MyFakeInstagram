@@ -1,4 +1,4 @@
-package com.example.instagram
+package com.example.instagram.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
