@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.instagram.databinding.ActivityUploadBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -51,14 +52,34 @@ class UploadActivity : AppCompatActivity() {
     }
 
     fun upload(view: View) {
-        val reference=storage.reference
-        val imageReference=reference.child("images/image.jpg")
+        val reference = storage.reference
+        val imageReference = reference.child("images/image.jpg")
 
-        if( selectedPicture!=null){
+        if (selectedPicture != null) {
             imageReference.putFile(selectedPicture!!).addOnSuccessListener {
                 //download url -> firestore
-            }.addOnFailureListener{
-                Toast.makeText(this, it.localizedMessage,Toast.LENGTH_LONG).show()
+                imageReference.downloadUrl.addOnSuccessListener {
+                    val downloadUrl = it.toString()
+
+                    val postMap = hashMapOf<String, Any>()
+                    postMap.put("downloadUrl", downloadUrl)
+                    postMap.put("userEmail", auth.currentUser!!.email!!)
+                    postMap.put("comment", binding.commentText.text.toString())
+                    postMap.put("date", Timestamp.now())
+
+                    firestore.collection("Posts").add(postMap).addOnSuccessListener {
+                        finish()
+                    }
+                        .addOnFailureListener {
+                            Toast.makeText(
+                                this@UploadActivity,
+                                it.localizedMessage,
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                }
+            }.addOnFailureListener {
+                Toast.makeText(this, it.localizedMessage, Toast.LENGTH_LONG).show()
             }
         }
     }
